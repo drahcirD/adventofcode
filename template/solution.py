@@ -6,8 +6,8 @@ import itertools
 
 def p1(path = pathlib.Path(__file__).resolve().parent / "input.txt"):
     def parse():
-        nbrs = [int(x) for x in path.read_text().split('\n')]
-        return nbrs
+        lines = [int(x) for x in path.read_text().split('\n')]
+        return lines
         
     def solve(data):
         pass
