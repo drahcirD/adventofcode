@@ -1,1 +1,3 @@
 venv/
+**/example.txt
+**/input.txt
