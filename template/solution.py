@@ -4,6 +4,12 @@ import fire
 import collections
 import itertools
 
+def e1(path = pathlib.Path(__file__).resolve().parent / "example.txt"):
+    return p1(path)
+
+def e2(path = pathlib.Path(__file__).resolve().parent / "example.txt"):
+    return p2(path)
+
 def p1(path = pathlib.Path(__file__).resolve().parent / "input.txt"):
     def parse():
         lines = [int(x) for x in path.read_text().split('\n')]
