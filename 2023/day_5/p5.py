@@ -6,44 +6,9 @@ import collections
 import itertools
 
 
-
 from aocd import data as aoc_data
 from aocd import submit
-import tqdm
-
-# seeds: 79 14 55 13
-
-# seed-to-soil map:
-# 50 98 2
-# 52 50 48
-
-# soil-to-fertilizer map:
-# 0 15 37
-# 37 52 2
-# 39 0 15
-
-# fertilizer-to-water map:
-# 49 53 8
-# 0 11 42
-# 42 0 7
-# 57 7 4
-
-# water-to-light map:
-# 88 18 7
-# 18 25 70
-
-# light-to-temperature map:
-# 45 77 23
-# 81 45 19
-# 68 64 13
-
-# temperature-to-humidity map:
-# 0 69 1
-# 1 0 69
-
-# humidity-to-location map:
-# 60 56 37
-# 56 93 4
+from ranges import Range, RangeSet
 
 
 def parse(data):
@@ -57,6 +22,7 @@ def p1(data=aoc_data):
     result = float("inf")
 
     seeds = data[0].split(":")[1].strip().split()
+
     maps = collections.defaultdict(lambda: collections.defaultdict(list))
     for entry in data[1:]:
         entry = entry.split("\n")
@@ -105,44 +71,32 @@ def p2(data=aoc_data):
     result = float("inf")
 
     seeds = data[0].split(":")[1].strip().split()
-    new_seeds = []
-    
-    maps = collections.defaultdict(lambda: collections.defaultdict(list))
+    seed_range = RangeSet()
+    for i in range(0, len(seeds), 2):
+        seed_range.add(Range(int(seeds[i]), int(seeds[i]) + int(seeds[i + 1])))
+
+    maps = []
     for entry in data[1:]:
         entry = entry.split("\n")
-        src, dst = entry[0].split()[0].split("-to-")
+        maps.append([])
         for range_entry in entry[1:]:
             dst_range, src_range, length = [int(n) for n in range_entry.split()]
 
-            maps[src][dst].append(
-                lambda n, dst_range=dst_range, src_range=src_range, length=length: dst_range
-                + (n - src_range)
-                if src_range <= n < src_range + length
-                else n
-            )
+            maps[-1].append((dst_range, src_range, length))
 
-    for i in tqdm.tqdm(range(0, len(seeds), 2), desc=" outer", position=0):
-        for d in tqdm.tqdm(range(int(seeds[i]), int(seeds[i])+int(seeds[i + 1])), desc=" inner loop", position=1, leave=False):
-            src = "seed"
-            dst = "soil"
-            cur_n = int(d)
-            while dst != "location":
-                for f in maps[src][dst]:
-                    new_n = f(cur_n)
-                    if new_n != cur_n:
-                        cur_n = new_n
-                        break
-                src = dst
-                dst = list(maps[dst].keys())[0]
+    result = 0
 
-            for f in maps[src][dst]:
-                new_n = f(cur_n)
-                if new_n != cur_n:
-                    cur_n = new_n
+    while True:
+        cur_n = result
+        for translation in reversed(maps):
+            for dst_range, src_range, length in translation:
+                if dst_range <= cur_n < dst_range + length:
+                    cur_n = src_range + (cur_n - dst_range)
                     break
-            result = min(result, cur_n)
-        print("cur result = ", result)
-    return result
+
+        if cur_n in seed_range:
+            return result
+        result += 1
 
 
 def main():
