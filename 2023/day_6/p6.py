@@ -44,11 +44,19 @@ def p2(data=aoc_data):
     time = int("".join(data[0].split(":")[1:]).replace(" ", ""))
     distance = int("".join(data[1].split(":")[1:]).replace(" ", ""))
 
-    count = 0
+    mini = float('inf')
+    maxi = float('-inf')
     for i in range(time):
         if i * (time - i) > distance:
-            count += 1
-    result *= count
+            mini = i 
+            break
+
+    for i in reversed(range(time)):
+        if i * (time - i) > distance:
+            maxi = i 
+            break
+
+    result = (maxi-mini)+1
 
     return result
 
