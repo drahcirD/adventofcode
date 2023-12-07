@@ -20,7 +20,7 @@ def p1(data=aoc_data):
     data = parse(data)
 
     result = 0
-    
+
     for d in data:
         nbrs = []
         for a in d:
@@ -45,7 +45,7 @@ def p2(data=aoc_data):
     result = 0
 
     words = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    
+
     for d in data:
         nbrs = []
         for i, a in enumerate(d):
@@ -56,9 +56,8 @@ def p2(data=aoc_data):
                 continue
         for i, word in enumerate(words, 1):
             if word in d:
-                nbrs.append((d.find(word),i))
-                nbrs.append((d.rfind(word),i))
-
+                nbrs.append((d.find(word), i))
+                nbrs.append((d.rfind(word), i))
 
         nbrs = sorted(nbrs)
         result += int(f"{nbrs[0][1]}{nbrs[-1][1]}")

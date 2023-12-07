@@ -22,16 +22,16 @@ def p1(data=aoc_data):
     data = parse(data)
 
     result = 0
-    high = {'blue': 14, 'green': 13, 'red': 12}
+    high = {"blue": 14, "green": 13, "red": 12}
     for d in data:
-        game, d = d.split(':')
-        game = int(game.strip().split(' ')[1])
-        d = d.split(';')
+        game, d = d.split(":")
+        game = int(game.strip().split(" ")[1])
+        d = d.split(";")
         possible = True
         for g in d:
-            g = g.strip().split(',')
+            g = g.strip().split(",")
             for item in g:
-                n, color = item.strip().split(' ')
+                n, color = item.strip().split(" ")
                 if int(n) > high[color]:
                     possible = False
                     break
@@ -50,14 +50,14 @@ def p2(data=aoc_data):
 
     result = 0
     for d in data:
-        game, d = d.split(':')
-        game = int(game.strip().split(' ')[1])
-        d = d.split(';')
-        maxes = {'blue': float('-inf'), 'green': float('-inf'), 'red': float('-inf')}
+        game, d = d.split(":")
+        game = int(game.strip().split(" ")[1])
+        d = d.split(";")
+        maxes = {"blue": float("-inf"), "green": float("-inf"), "red": float("-inf")}
         for g in d:
-            g = g.strip().split(',')
+            g = g.strip().split(",")
             for item in g:
-                n, color = item.strip().split(' ')
+                n, color = item.strip().split(" ")
                 maxes[color] = max(maxes[color], int(n))
 
         result += reduce(operator.mul, maxes.values(), 1)

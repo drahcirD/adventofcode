@@ -22,12 +22,12 @@ def p1(data=aoc_data):
     result = 0
 
     for d in data:
-        d = d.split(': ')[1]
-        winning, have = d.split(' | ')
-        winning = set([int(x.strip()) for x in winning.split(' ') if x.strip()])
-        have = set([int(x.strip()) for x in have.split(' ')  if x.strip()])
+        d = d.split(": ")[1]
+        winning, have = d.split(" | ")
+        winning = set([int(x.strip()) for x in winning.split(" ") if x.strip()])
+        have = set([int(x.strip()) for x in have.split(" ") if x.strip()])
         if have & winning:
-            points = 2**(len(have & winning)-1)
+            points = 2 ** (len(have & winning) - 1)
             result += points
 
     return result
@@ -43,23 +43,23 @@ def p2(data=aoc_data):
     cards = []
     map = {}
     for d in data:
-        card, d = d.split(': ')
-        card = int(card.split(' ')[-1].strip())
+        card, d = d.split(": ")
+        card = int(card.split(" ")[-1].strip())
 
         cards.append(card)
-        winning, have = d.split(' | ')
-        winning = set([int(x.strip()) for x in winning.split(' ') if x.strip()])
-        have = set([int(x.strip()) for x in have.split(' ')  if x.strip()])
+        winning, have = d.split(" | ")
+        winning = set([int(x.strip()) for x in winning.split(" ") if x.strip()])
+        have = set([int(x.strip()) for x in have.split(" ") if x.strip()])
 
-        map[card]= len(have&winning)
-
+        map[card] = len(have & winning)
 
     cards = collections.Counter(cards)
     for c, count in cards.items():
-        new = {c+i:count for i in range(1, map[c]+1) if c+i in map}
+        new = {c + i: count for i in range(1, map[c] + 1) if c + i in map}
         cards.update(new)
 
     return sum(cards.values())
+
 
 def main():
     examples = pathlib.Path(__file__).resolve().parent.glob("example*.txt")
