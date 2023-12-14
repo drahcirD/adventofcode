@@ -22,14 +22,14 @@ def dfs(visited, index, node):
     if index >= len(node):
         return
 
-    if node[index] == '?':
-        node1 = node[:index] + '#' + node[index+1:]
-        dfs(visited, index+1, node1)
-        node2 = node[:index] + '.' + node[index+1:]
+    if node[index] == "?":
+        node1 = node[:index] + "#" + node[index + 1 :]
+        dfs(visited, index + 1, node1)
+        node2 = node[:index] + "." + node[index + 1 :]
 
-        dfs(visited, index+1, node2)
-    elif node[index] in {'#', "."}:
-        dfs(visited, index+1, node)
+        dfs(visited, index + 1, node2)
+    elif node[index] in {"#", "."}:
+        dfs(visited, index + 1, node)
 
 
 def p1(data=aoc_data):
@@ -38,22 +38,22 @@ def p1(data=aoc_data):
     result = 0
 
     for d in data:
-        string, template = d.split(' ')
+        string, template = d.split(" ")
         template = [int(x) for x in template.split(",")]
 
         visited = set()
 
         dfs(visited, 0, string)
-        visited = [v for v in visited if '?' not in set(v)]
+        visited = [v for v in visited if "?" not in set(v)]
 
         r = 0
         for v in visited:
-            running_hash =0
+            running_hash = 0
             hash = []
             for i, c in enumerate(v):
-                if c == '#':
-                    running_hash +=1
-                elif c == '.':
+                if c == "#":
+                    running_hash += 1
+                elif c == ".":
                     if running_hash:
                         hash.append(running_hash)
                     running_hash = 0
@@ -65,17 +65,15 @@ def p1(data=aoc_data):
         print(string, r)
         result += r
 
-
-
     return result
 
 
 def parse2(data):
     return parse(data)
 
+
 def p2(data=aoc_data):
     data = parse2(data)
-
 
     result = 0
 
@@ -91,31 +89,31 @@ def p2(data=aoc_data):
             return 0
 
         res = 0
-        if string[index] == '?':
-            res += dfs2(index+1, running+1, filled, t_index)
+        if string[index] == "?":
+            res += dfs2(index + 1, running + 1, filled, t_index)
 
             if t_index < len(template) and running == template[t_index]:
-                res += dfs2(index+1, 0, filled+1, t_index+1)
+                res += dfs2(index + 1, 0, filled + 1, t_index + 1)
             elif running == 0:
-                res += dfs2(index+1, 0, filled, t_index)
+                res += dfs2(index + 1, 0, filled, t_index)
 
-        elif string[index] == '#':
-            res += dfs2(index+1, running+1, filled, t_index)
-        elif string[index] == '.':
+        elif string[index] == "#":
+            res += dfs2(index + 1, running + 1, filled, t_index)
+        elif string[index] == ".":
             if t_index < len(template) and running == template[t_index]:
-                res += dfs2(index+1, 0, filled+1, t_index+1)
+                res += dfs2(index + 1, 0, filled + 1, t_index + 1)
             elif running == 0:
-                res += dfs2(index+1, 0, filled, t_index)
+                res += dfs2(index + 1, 0, filled, t_index)
 
         return res
 
     for d in data:
-        string, template = d.split(' ')
-        template = [int(x) for x in template.split(",")]*5
-        string = f'{string}?{string}?{string}?{string}?{string}.'
+        string, template = d.split(" ")
+        template = [int(x) for x in template.split(",")] * 5
+        string = f"{string}?{string}?{string}?{string}?{string}."
         r = dfs2(0, 0, 0, 0)
         dfs2.cache_clear()
-        result+=r
+        result += r
         print(string, r)
     return result
 

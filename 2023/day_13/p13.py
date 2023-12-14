@@ -15,49 +15,43 @@ def parse(data):
     return data.split("\n\n")
 
 
-
-
 def p1(data=aoc_data):
     data = parse(data)
 
     result = 0
 
     for pattern in data:
-        pattern = [[1 if v == '#' else 0 for v in row] for row in pattern.split("\n")]
+        pattern = [[1 if v == "#" else 0 for v in row] for row in pattern.split("\n")]
         pattern = np.array([np.array(line) for line in pattern])
         rows, cols = pattern.shape
         for row in range(rows):
-            mid = rows //2
-            if row > mid:          
+            mid = rows // 2
+            if row > mid:
                 down = pattern[row:, :]
                 size = down.shape
-                up = pattern[row-size[0]:row, :]
+                up = pattern[row - size[0] : row, :]
             else:
                 up = pattern[:row, :]
                 size = up.shape
-                down = pattern[row:row+size[0], :]
-
+                down = pattern[row : row + size[0], :]
 
             if (np.flipud(up) == down).all():
-                result += 100*(row)
- 
-        
+                result += 100 * (row)
+
         for col in range(cols):
-            mid = cols //2
+            mid = cols // 2
             if col > mid:
                 right = pattern[:, col:]
                 size = right.shape
-                left = pattern[:, col-size[1]:col]
+                left = pattern[:, col - size[1] : col]
             else:
                 left = pattern[:, :col]
                 size = left.shape
-                right = pattern[:, col:col+size[1]]
+                right = pattern[:, col : col + size[1]]
 
-    
             if (np.fliplr(left) == right).all():
                 result += col
 
-    
     return result
 
 
@@ -71,41 +65,37 @@ def p2(data=aoc_data):
     result = 0
 
     for pattern in data:
-        pattern = [[1 if v == '#' else 0 for v in row] for row in pattern.split("\n")]
+        pattern = [[1 if v == "#" else 0 for v in row] for row in pattern.split("\n")]
         pattern = np.array([np.array(line) for line in pattern])
         rows, cols = pattern.shape
         for row in range(rows):
-            mid = rows //2
-            if row > mid:          
+            mid = rows // 2
+            if row > mid:
                 down = pattern[row:, :]
                 size = down.shape
-                up = pattern[row-size[0]:row, :]
+                up = pattern[row - size[0] : row, :]
             else:
                 up = pattern[:row, :]
                 size = up.shape
-                down = pattern[row:row+size[0], :]
+                down = pattern[row : row + size[0], :]
 
+            if np.count_nonzero(np.flipud(up) == down) == up.size - 1:
+                result += 100 * (row)
 
-            if np.count_nonzero(np.flipud(up) == down) == up.size-1:
-                result += 100*(row)
- 
-        
         for col in range(cols):
-            mid = cols //2
+            mid = cols // 2
             if col > mid:
                 right = pattern[:, col:]
                 size = right.shape
-                left = pattern[:, col-size[1]:col]
+                left = pattern[:, col - size[1] : col]
             else:
                 left = pattern[:, :col]
                 size = left.shape
-                right = pattern[:, col:col+size[1]]
+                right = pattern[:, col : col + size[1]]
 
-    
-            if np.count_nonzero(np.fliplr(left) == right) == left.size-1:
+            if np.count_nonzero(np.fliplr(left) == right) == left.size - 1:
                 result += col
 
-    
     return result
 
 

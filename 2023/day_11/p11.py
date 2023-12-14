@@ -21,27 +21,32 @@ def parse(data):
     n = 1
     for y in range(max(lines, key=lambda x: x[1])[1] + 1):
         for x in range(max(lines, key=lambda x: x[0])[0] + 1):
-            if lines[(x,y)] == '#':
-                galaxies[(x,y)] = n
-                n+=1
+            if lines[(x, y)] == "#":
+                galaxies[(x, y)] = n
+                n += 1
                 col_with_galaxies.add(y)
                 rows_with_galaxies.add(x)
-    
-    rows_without_galaxies = set(range(max(lines, key=lambda x: x[0])[0] + 1)) - rows_with_galaxies
-    cols_without_galaxies = set(range(max(lines, key=lambda x: x[1])[1] + 1)) - col_with_galaxies
+
+    rows_without_galaxies = (
+        set(range(max(lines, key=lambda x: x[0])[0] + 1)) - rows_with_galaxies
+    )
+    cols_without_galaxies = (
+        set(range(max(lines, key=lambda x: x[1])[1] + 1)) - col_with_galaxies
+    )
 
     galaxy_map = {}
     for pos, galaxy in galaxies.items():
-        x,y = pos
+        x, y = pos
         x += len([row for row in rows_without_galaxies if row < x])
         y += len([col for col in cols_without_galaxies if col < y])
-        galaxy_map[(x,y)] = galaxy
-
+        galaxy_map[(x, y)] = galaxy
 
     return galaxy_map
 
+
 def manhattan(p1, p2):
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
 
 def p1(data=aoc_data):
     data = parse(data)
@@ -56,8 +61,8 @@ def p1(data=aoc_data):
             if (galaxy2, galaxy) in done:
                 continue
             dist = manhattan(pos, pos2)
-            done.add((galaxy,galaxy2))
-            if dist < mins.get((galaxy, galaxy2), float('inf')):
+            done.add((galaxy, galaxy2))
+            if dist < mins.get((galaxy, galaxy2), float("inf")):
                 mins[(galaxy, galaxy2)] = dist
 
     return sum(mins.values())
@@ -73,21 +78,25 @@ def parse2(data):
     n = 1
     for y in range(max(lines, key=lambda x: x[1])[1] + 1):
         for x in range(max(lines, key=lambda x: x[0])[0] + 1):
-            if lines[(x,y)] == '#':
-                galaxies[(x,y)] = n
-                n+=1
+            if lines[(x, y)] == "#":
+                galaxies[(x, y)] = n
+                n += 1
                 col_with_galaxies.add(y)
                 rows_with_galaxies.add(x)
-    
-    rows_without_galaxies = set(range(max(lines, key=lambda x: x[0])[0] + 1)) - rows_with_galaxies
-    cols_without_galaxies = set(range(max(lines, key=lambda x: x[1])[1] + 1)) - col_with_galaxies
+
+    rows_without_galaxies = (
+        set(range(max(lines, key=lambda x: x[0])[0] + 1)) - rows_with_galaxies
+    )
+    cols_without_galaxies = (
+        set(range(max(lines, key=lambda x: x[1])[1] + 1)) - col_with_galaxies
+    )
 
     galaxy_map = {}
     for pos, galaxy in galaxies.items():
-        x,y = pos
-        x += len([row for row in rows_without_galaxies if row <= x])*(1e6-1)
-        y += len([col for col in cols_without_galaxies if col <= y])*(1e6-1)
-        galaxy_map[(x,y)] = galaxy
+        x, y = pos
+        x += len([row for row in rows_without_galaxies if row <= x]) * (1e6 - 1)
+        y += len([col for col in cols_without_galaxies if col <= y]) * (1e6 - 1)
+        galaxy_map[(x, y)] = galaxy
 
     return galaxy_map
 
@@ -105,10 +114,9 @@ def p2(data=aoc_data):
             if (galaxy2, galaxy) in done:
                 continue
             dist = manhattan(pos, pos2)
-            done.add((galaxy,galaxy2))
-            if dist < mins.get((galaxy, galaxy2), float('inf')):
+            done.add((galaxy, galaxy2))
+            if dist < mins.get((galaxy, galaxy2), float("inf")):
                 mins[(galaxy, galaxy2)] = dist
-        
 
     return sum(mins.values())
 

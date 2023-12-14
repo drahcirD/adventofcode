@@ -28,7 +28,6 @@ def p1(data=aoc_data):
         for a, b in itertools.pairwise(d):
             lists[-1].append(b - a)
 
-
         while not (len(set(lists[-1])) == 1 and lists[-1][0] == 0):
             lists.append([])
 
@@ -58,7 +57,6 @@ def p2(data=aoc_data):
         lists.append([])
         for a, b in itertools.pairwise(d):
             lists[-1].append(b - a)
-
 
         while not (len(set(lists[-1])) == 1 and lists[-1][0] == 0):
             lists.append([])

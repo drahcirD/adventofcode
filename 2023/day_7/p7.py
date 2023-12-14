@@ -139,7 +139,10 @@ def p2(data=aoc_data):
         elif (
             max(count.values()) == 3
             and len(count) == 2
-            or (len([k for k, v in count.items() if v == 2 and k != 'J']) == 2 and n_J == 1)
+            or (
+                len([k for k, v in count.items() if v == 2 and k != "J"]) == 2
+                and n_J == 1
+            )
         ):
             full.append(hand)
         elif (

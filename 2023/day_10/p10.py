@@ -82,6 +82,7 @@ def p1(data=aoc_data):
 def parse2(data):
     return parse(data)
 
+
 def p2(data=aoc_data):
     data = parse2(data)
     start_marker = "S"
@@ -130,7 +131,7 @@ def p2(data=aoc_data):
             check.add(right)
         elif pos2 in data:
             visited_extra.add(right)
-    
+
     while True:
         pos1 = (int(pos.real), int(pos.imag))
 
@@ -145,7 +146,6 @@ def p2(data=aoc_data):
 
         _add_right(pos, direction)
 
-  
         path.append(pos1)
         pos = pos + direction
         steps += 1
@@ -155,7 +155,6 @@ def p2(data=aoc_data):
             _add_right(pos, direction)
             path.append((int(pos.real), int(pos.imag)))
             break
-
 
     visited = set()
 
@@ -175,7 +174,6 @@ def p2(data=aoc_data):
                 visited.add(com)
                 check.add(com)
 
-
     path = matplotlib.path.Path(path)
     inside = set()
     for pos in data:
@@ -183,7 +181,7 @@ def p2(data=aoc_data):
         if com not in lengths and path.contains_point(pos):
             inside.add(com)
 
-    old_and_wrong = (visited | (visited_extra - set(lengths)))
+    old_and_wrong = visited | (visited_extra - set(lengths))
     if inside != old_and_wrong:
         breakpoint()
     return len(inside)

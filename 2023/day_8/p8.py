@@ -30,16 +30,16 @@ def p1(data=aoc_data):
         left, right = loc.split(", ")
         left = left[1:]
         right = right[:-1]
-        path[pos]['L'] = left
-        path[pos]['R'] = right
+        path[pos]["L"] = left
+        path[pos]["R"] = right
 
-    pos = 'AAA'
+    pos = "AAA"
     while True:
         ins = instr[result % len(instr)]
-        if pos == 'ZZZ':
+        if pos == "ZZZ":
             return result
         pos = path[pos][ins]
-        result+=1
+        result += 1
 
 
 def parse2(data):
@@ -58,23 +58,23 @@ def p2(data=aoc_data):
         left, right = loc.split(", ")
         left = left[1:]
         right = right[:-1]
-        path[pos]['L'] = left
-        path[pos]['R'] = right
+        path[pos]["L"] = left
+        path[pos]["R"] = right
 
-    pos = [p for p in path if p[-1] == 'A']
+    pos = [p for p in path if p[-1] == "A"]
     finishes = {}
     while True:
         ins = instr[result % len(instr)]
-        result+=1
+        result += 1
         if len(finishes) == len(pos):
-           break
+            break
         for i, p in enumerate(pos):
             if i in finishes:
                 continue
             pos[i] = path[p][ins]
-            if pos[i][-1] == 'Z':
+            if pos[i][-1] == "Z":
                 finishes[i] = result
- 
+
     return math.lcm(*finishes.values())
 
 
