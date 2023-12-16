@@ -12,7 +12,6 @@ from aocd import data as aoc_data
 from aocd import submit
 
 
-
 def parse(data):
     lines = [x for x in data.split("\n")]
     return lines
