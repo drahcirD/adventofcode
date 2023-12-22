@@ -159,17 +159,22 @@ def p2(data=aoc_data):
     # many grids we end up finding. After a long time of trying to find a smart way to find
     # how far we got depending on the number of steps I lucked out in testing if just fitting
     # a second order polynomial to the values of crossing the border twice would work...
-    for step in steps:
-        distances = bfs_infinite(data, start, step)
-        print("steps=", step)
-        value = len([pos for pos, distance in distances.items() if distance == step])
-        print("value=", value)
-        values.append(value)
 
-    polynom = np.polynomial.Polynomial.fit(
-        steps, values, 2, domain=[], window=[steps[0], steps[-1]]
-    )
-    return int(polynom(full_steps))
+    for steps in [6, 10, 50, 100, 500]:
+        distances = bfs_infinite(data, start, steps)
+        print("steps=", steps)
+        print(len([pos for pos, distance in distances.items() if distance == steps]))
+
+        second = collections.Counter()
+        layers = set()
+        for pos, distance in distances.items():
+            x_layer = pos[0] // (max_x + 1)
+            y_layer = pos[1] // (max_y + 1)
+            second[(x_layer, y_layer)] += 1 if distance == steps else 0
+
+        print(f"{second=}")
+        print("=" * 50)
+    breakpoint()
 
 
 def main():
