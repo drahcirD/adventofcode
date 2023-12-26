@@ -5,3 +5,5 @@ advent-of-code-data
 browser-cookie3
 black
 tqdm
+sympy
+networkx

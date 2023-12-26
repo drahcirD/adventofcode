@@ -19,10 +19,12 @@ from aocd import submit
 def manhattan(p1, p2):
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
+
 def parse(data):
     return {
         (x, y): vy for x, vx in enumerate(data.split("\n")) for y, vy in enumerate(vx)
     }
+
 
 def dijkstra(data, start, end):
     distances = {}
@@ -32,12 +34,12 @@ def dijkstra(data, start, end):
     cur_max = 0
     i = 0
     while pq:
-        i+=1
+        i += 1
         cur_dist, state = heapq.heappop(pq)
         path, cur = state
         if cur == end:
             # return cur_dist
-            cur_max = max(abs(cur_dist)-1, cur_max)
+            cur_max = max(abs(cur_dist) - 1, cur_max)
             print(cur_max)
             # print_room(data, path)
             # breakpoint()
@@ -71,9 +73,10 @@ def dijkstra(data, start, end):
             # if new_path_cost < old_path_cost:
             #     heuristic = -0
             heapq.heappush(pq, (new_path_cost, new_state))
-                # distances[neighbor] = new_path_cost
+            # distances[neighbor] = new_path_cost
 
     return cur_max
+
 
 def dijkstra_junction(data, junctions, start, end):
     distances = {}
@@ -89,7 +92,7 @@ def dijkstra_junction(data, junctions, start, end):
         if cur == end:
             if abs(cur_dist) > cur_max:
                 max_path = path
-            cur_max = max(abs(cur_dist)-1, cur_max)
+            cur_max = max(abs(cur_dist) - 1, cur_max)
             continue
         r, c = cur
 
@@ -99,7 +102,6 @@ def dijkstra_junction(data, junctions, start, end):
                 continue
             if neighbor in path:
                 continue
-            
 
             if neighbor in junctions:
                 if neighbor != end:
@@ -110,8 +112,8 @@ def dijkstra_junction(data, junctions, start, end):
             new_path_cost = len(new_path)
             heapq.heappush(pq, (new_path_cost, new_state))
 
-
     return cur_max, max_path
+
 
 def dijkstra_junction2(data, start, end):
     distances = {}
@@ -150,10 +152,17 @@ def dijkstra_junction2(data, start, end):
 
             new_path_cost = cur_dist - length
 
-            heapq.heappush(pq, (new_path_cost - max([x[0] for x in data[cur].values()]),  new_path_cost, new_state))
-
+            heapq.heappush(
+                pq,
+                (
+                    new_path_cost - max([x[0] for x in data[cur].values()]),
+                    new_path_cost,
+                    new_state,
+                ),
+            )
 
     return cur_max
+
 
 def p1(data=aoc_data):
     data = parse(data)
@@ -163,9 +172,9 @@ def p1(data=aoc_data):
     max_y = max(data, key=operator.itemgetter(1))[1]
     min_x = min(data, key=operator.itemgetter(0))[0]
     min_y = min(data, key=operator.itemgetter(1))[1]
-    data = {pos: val for pos,val in data.items() if val != '#'}
-    start = [pos for pos, val in data.items() if val == "." and pos[0]==0][0]
-    end = [pos for pos, val in data.items() if val == "." and pos[0]==max_x][0]
+    data = {pos: val for pos, val in data.items() if val != "#"}
+    start = [pos for pos, val in data.items() if val == "." and pos[0] == 0][0]
+    end = [pos for pos, val in data.items() if val == "." and pos[0] == max_x][0]
 
     return abs(dijkstra(data, start, end))
 
@@ -173,17 +182,19 @@ def p1(data=aoc_data):
 def parse2(data):
     return parse(data)
 
+
 def print_room(room, path):
     for x in range(max(room, key=lambda x: x[0])[0] + 1):
         for y in range(max(room, key=lambda x: x[1])[1] + 1):
-            if (x,y) in path:
-                print('O', end="")
+            if (x, y) in path:
+                print("O", end="")
                 continue
             try:
                 print(room[(x, y)], end="")
             except:
                 print("#", end="")
         print()
+
 
 def p2(data=aoc_data):
     data = parse2(data)
@@ -193,13 +204,13 @@ def p2(data=aoc_data):
     max_y = max(data, key=operator.itemgetter(1))[1]
     min_x = min(data, key=operator.itemgetter(0))[0]
     min_y = min(data, key=operator.itemgetter(1))[1]
-    data = {pos: val for pos,val in data.items() if val != '#'}
-    start = [pos for pos, val in data.items() if val == "." and pos[0]==0][0]
-    end = [pos for pos, val in data.items() if val == "." and pos[0]==max_x][0]
+    data = {pos: val for pos, val in data.items() if val != "#"}
+    start = [pos for pos, val in data.items() if val == "." and pos[0] == 0][0]
+    end = [pos for pos, val in data.items() if val == "." and pos[0] == max_x][0]
 
     junctions = {}
     for pos, val in data.items():
-        r,c = pos
+        r, c = pos
         neighbors = [(r, c - 1), (r - 1, c), (r + 1, c), (r, c + 1)]
         count = 0
         for neighbor in neighbors:
@@ -208,7 +219,7 @@ def p2(data=aoc_data):
         if count > 2:
             print(pos, val)
             junctions[pos] = {}
-    
+
     for junction in tqdm.tqdm(junctions):
         for next_junction in junctions:
             if junction == next_junction:
@@ -226,7 +237,6 @@ def p2(data=aoc_data):
         if sys.maxsize > length > 0:
             junctions[start][junction] = (length, path)
         if sys.maxsize > length2 > 0:
-
             junctions[junction][end] = (length2, path2)
 
     return dijkstra_junction2(junctions, start, end)
