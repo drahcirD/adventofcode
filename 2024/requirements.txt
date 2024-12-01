@@ -1,0 +1,9 @@
+fire
+numpy
+more-itertools
+advent-of-code-data
+browser-cookie3
+black
+tqdm
+sympy
+networkx
