@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+import operator
 import pathlib
 from pprint import pprint
 import fire
@@ -20,17 +21,20 @@ def p1(data=aoc_data):
     data = parse(data)
 
     result = 0
-    operators = ['*', '+']
+    operators = [operator.mul, operator.add]
     for d in data:
-        test, nbrs = d.split(':')
-        test= int(test)
+        test, nbrs = d.split(":")
+        test = int(test)
         nbrs = [int(x) for x in nbrs.lstrip().rstrip().split()]
         running = [nbrs[0]]
         for nbr in nbrs[1:]:
             new_running = []
             for r in running:
                 for o in operators:
-                    new_running.append(eval(f'{r}{o}{nbr}'))
+                    res = o(r, nbr)
+                    if res > test:
+                        continue
+                    new_running.append(res)
             running = new_running
         if test in running:
             result += test
@@ -46,21 +50,21 @@ def p2(data=aoc_data):
     data = parse2(data)
 
     result = 0
-    operators = ['*', '+', '||']
+    operators = [operator.mul, operator.add, lambda x,y: int(f"{x}{y}")]
 
     for d in data:
-        test, nbrs = d.split(':')
-        test= int(test)
+        test, nbrs = d.split(":")
+        test = int(test)
         nbrs = [int(x) for x in nbrs.lstrip().rstrip().split()]
         running = [nbrs[0]]
         for nbr in nbrs[1:]:
             new_running = []
             for r in running:
                 for o in operators:
-                    if o == '||':
-                        new_running.append(int(f'{r}{nbr}'))
-                    else:
-                        new_running.append(eval(f'{r}{o}{nbr}'))
+                    res = o(r, nbr)
+                    if res > test:
+                        continue
+                    new_running.append(res)
             running = new_running
         if test in running:
             result += test
